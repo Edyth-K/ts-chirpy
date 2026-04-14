@@ -1,0 +1,32 @@
+{
+  "name": "ts-chirpy",
+  "version": "1.0.0",
+  "description": "A RESTful social network API built with TypeScript and Express.js. Users can post short messages (\"chirps\"), follow each other, and authenticate securely — all backed by a PostgreSQL database.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/index.js",
+    "dev": "npx tsc && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Edyth-K/ts-chirpy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Edyth-K/ts-chirpy/issues"
+  },
+  "homepage": "https://github.com/Edyth-K/ts-chirpy#readme",
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.6.0",
+    "typescript": "^6.0.2"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

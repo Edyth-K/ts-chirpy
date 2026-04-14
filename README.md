@@ -50,4 +50,4 @@ npm run dev
 
 ## Course
 
-Built as part of the [Boot.dev](https://www.boot.dev) Learn HTTP Servers course.
+Built as part of the [Boot.Dev: Learn HTTP Servers](https://www.boot.dev/courses/learn-http-servers-typescript) course.
