@@ -1,6 +1,13 @@
 import { Request, Response } from "express";
 
-// chirps.ts
+const profaneWords = ["kerfuffle", "sharbert", "fornax"];
+
+function cleanBody(text: string): string {
+    return text.split(" ").map(word =>
+        profaneWords.includes(word.toLowerCase()) ? "****" : word
+    ).join(" ");
+}
+
 export function handlerValidateChirp(req: Request, res: Response) {
   let body = ""; // 1. Initialize
 
@@ -15,12 +22,12 @@ export function handlerValidateChirp(req: Request, res: Response) {
     try {
       const parsedBody = JSON.parse(body);
       if (parsedBody.body.length > 140) {
-        res.status(400).send(JSON.stringify({ error: "Chirp is too long"}));
-        return;
+        throw new Error("Chirp is too long");
       }
-      res.status(200).send(JSON.stringify({ valid: true}));
+      const cleanedBody = cleanBody(parsedBody.body);
+      res.status(200).send(JSON.stringify({ cleanedBody }));
     } catch (error) {
-      res.status(400).send("Invalid JSON");
+      res.status(500).json({ error: "Something went wrong on our end" });
     }
   });
 }
