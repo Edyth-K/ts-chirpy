@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { BadRequestError } from "../errors.js";
 
 const profaneWords = ["kerfuffle", "sharbert", "fornax"];
 
@@ -22,12 +23,18 @@ export function handlerValidateChirp(req: Request, res: Response) {
     try {
       const parsedBody = JSON.parse(body);
       if (parsedBody.body.length > 140) {
-        throw new Error("Chirp is too long");
+        throw new BadRequestError("Chirp is too long. Max length is 140");
       }
       const cleanedBody = cleanBody(parsedBody.body);
       res.status(200).send(JSON.stringify({ cleanedBody }));
     } catch (error) {
-      res.status(500).json({ error: "Something went wrong on our end" });
+        if (error instanceof BadRequestError) {
+            res.status(400).json({ error: error.message });
+        } else {
+            console.log(error);
+            res.status(500).json({ error: "Something went wrong on our end" });
+        }
     }
+
   });
 }

@@ -1,5 +1,19 @@
 import { Request, Response, NextFunction } from "express";
 import { apiConfig } from "../config.js";
+import { BadRequestError, UnauthorizedError, ForbiddenError, NotFoundError } from "../errors.js";
+
+const customErrors = [BadRequestError, UnauthorizedError, ForbiddenError, NotFoundError];
+
+export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
+    const custom = customErrors.find(e => err instanceof e);
+    if (custom) {
+        res.status((err as any).statusCode).json({ error: err.message });
+    } else {
+        console.log(err);
+        res.status(500).json({ error: "Something went wrong on our end" });
+    }
+}
+
 
 export function middlewareLogResponses(req: Request, res: Response, next: NextFunction) {
     res.on("finish", () => {
@@ -14,9 +28,4 @@ export function middlewareLogResponses(req: Request, res: Response, next: NextFu
 export function middlewareMetricsInc(req: Request, res: Response, next: NextFunction) {
     apiConfig.fileserverHits += 1;
     next();
-}
-
-export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
-    console.log(err);
-    res.status(500).json({ error: "Something went wrong on our end "});
 }
