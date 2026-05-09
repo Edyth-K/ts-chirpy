@@ -9,7 +9,7 @@ import { handlerReadiness } from "./api/readiness.js";
 import { middlewareLogResponses, middlewareMetricsInc, errorHandler } from "./api/middleware.js";
 import { handlerMetrics } from "./api/metrics.js";
 import { handlerReset } from "./api/reset.js";
-import { handlerValidateChirp } from "./api/chirps.js";
+import { handlerCreateChirp } from "./api/chirps.js";
 import { handlerCreateUser } from "./api/users.js";
 
 const migrationClient = postgres(config.db.url, { max: 1 });
@@ -24,7 +24,7 @@ app.use("/app", middlewareMetricsInc, express.static('./src/app'));
 app.get("/admin/metrics", handlerMetrics);
 app.post("/admin/reset", handlerReset);
 app.get("/api/healthz", handlerReadiness);
-app.post("/api/validate_chirp", handlerValidateChirp);
+app.post("/api/chirps", handlerCreateChirp);
 app.post("/api/users", handlerCreateUser);
 app.use(errorHandler);
 app.listen(PORT, () => {
