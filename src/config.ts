@@ -5,6 +5,7 @@ process.loadEnvFile();
 type APIConfig = {
     fileserverHits: number;
     platform: string;
+    jwtSecret: string;
 }
 
 type DBConfig = {
@@ -16,6 +17,7 @@ export const config = {
     api: {
         fileserverHits: 0,
         platform: process.env.PLATFORM ?? "",
+        jwtSecret: process.env.JWT_SECRET ?? "",
     } as APIConfig,
     db: {
         url: process.env.DB_URL ?? "",

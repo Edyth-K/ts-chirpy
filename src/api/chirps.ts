@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { BadRequestError } from "../errors.js";
 import { createChirp, getAllChirps, getChirpById } from "../db/queries/chirps.js";
+import { getBearerToken, validateJWT } from "./auth.js";
+import { config } from "../config.js";
 
 const profaneWords = ["kerfuffle", "sharbert", "fornax"];
 
@@ -20,7 +22,9 @@ export async function handlerCreateChirp(req: Request, res: Response) {
   req.on("end", async () => {
     res.header("Content-Type", "application/json");
     try {
-      const { body: chirpBody, userId } = JSON.parse(body);
+      const token = getBearerToken(req);
+      const userId = validateJWT(token, config.api.jwtSecret);
+      const { body: chirpBody } = JSON.parse(body);
       if (chirpBody.length > 140) {
         throw new BadRequestError("Chirp is too long. Max length is 140");
       }
