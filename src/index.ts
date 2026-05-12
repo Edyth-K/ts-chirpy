@@ -10,7 +10,7 @@ import { middlewareLogResponses, middlewareMetricsInc, errorHandler } from "./ap
 import { handlerMetrics } from "./api/metrics.js";
 import { handlerReset } from "./api/reset.js";
 import { handlerCreateChirp, handlerGetChirps, handlerGetChirp } from "./api/chirps.js";
-import { handlerCreateUser } from "./api/users.js";
+import { handlerCreateUser, handlerLogin } from "./api/users.js";
 
 const migrationClient = postgres(config.db.url, { max: 1 });
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
@@ -28,6 +28,7 @@ app.post("/api/chirps", handlerCreateChirp);
 app.post("/api/users", handlerCreateUser);
 app.get("/api/chirps", handlerGetChirps);
 app.get("/api/chirps/:chirpId", handlerGetChirp);
+app.post("/api/login", handlerLogin);
 app.use(errorHandler);
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
