@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { BadRequestError } from "../errors.js";
+import { BadRequestError, UnauthorizedError } from "../errors.js";
 import { createChirp, getAllChirps, getChirpById } from "../db/queries/chirps.js";
 import { getBearerToken, validateJWT } from "./auth.js";
 import { config } from "../config.js";
@@ -34,6 +34,8 @@ export async function handlerCreateChirp(req: Request, res: Response) {
     } catch (error) {
         if (error instanceof BadRequestError) {
             res.status(400).json({ error: error.message });
+        } else if (error instanceof UnauthorizedError) {
+          res.status(401).json({ error: error.message });
         } else {
             console.log(error);
             res.status(500).json({ error: "Something went wrong on our end" });
